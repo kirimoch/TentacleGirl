@@ -4,31 +4,29 @@ using UnityEngine;
 
 public class Tentacle : MonoBehaviour
 {
-    public float TentacleLength;
-    public float distance;
     public GameObject[] ioints;
-    public bool discovery = true;
     public bool attack;
 
-    Rigidbody rg;
+    GameObject parent;
+    Rigidbody trg;
     GameObject objEnemy;
 
 
     // Use this for initialization
     void Start()
     {
-        rg = ioints[0].GetComponent<Rigidbody>();
+        trg = ioints[0].GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.S))
         {
             if (attack == false)
             {
                 attack = true;
-                rg.isKinematic = false;
+                trg.isKinematic = false;
                 StartCoroutine(Wait(0.5f));
             }
         }
@@ -51,22 +49,20 @@ public class Tentacle : MonoBehaviour
             yield return null;
         }
         Stop();
-
-        yield return MoveLerp(ioints[0].transform, ioints[0].transform.position, ioints[ioints.Length - 1].transform.position, duration);
         st = Time.time;
-        while (Time.time - st < duration)
+        while (Time.time - st < 0.7)
         {
-            GameObject parent = transform.parent.gameObject;
-            for (int j = 0; j < ioints.Length; j++)
-            {
-                ioints[j].transform.position = parent.transform.position;
-            }
-           
+            Return();
             yield return null;
+        }
+        parent = transform.parent.gameObject;
+        for (int j = 0; j < ioints.Length; j++)
+        {
+            ioints[j].transform.position = parent.transform.position;
         }
         Stop();      
         attack = false;
-        rg.isKinematic = true;
+        trg.isKinematic = true;
         yield break;
     }
 
@@ -76,19 +72,19 @@ public class Tentacle : MonoBehaviour
         if (objEnemy != null)
         {
             ioints[0].transform.LookAt(objEnemy.transform);
-            rg.AddForce(ioints[0].transform.forward * 100.0f);
+            trg.AddForce(ioints[0].transform.forward * 100.0f);
         }
         else
         {
             ioints[0].transform.rotation =  Quaternion.Euler(0, 90, 0);
-            rg.AddForce(ioints[0].transform.forward * 100.0f);
+            trg.AddForce(ioints[0].transform.forward * 100.0f);
         }
     }
 
     IEnumerator MoveLerp(Transform transform, Vector3 from, Vector3 to, float duration)
     {
         float st = Time.time;
-        while (Time.time - st < duration)
+        while (Time.time - st < 0.5f)
         {
             transform.position = Vector3.Lerp(from, to, (Time.time - st)/ duration);
             yield return null;
@@ -103,7 +99,7 @@ public class Tentacle : MonoBehaviour
 
     void Stop()
     {
-        rg.isKinematic = true;
-        rg.isKinematic = false;
+        trg.isKinematic = true;
+        trg.isKinematic = false;
     }
 }
