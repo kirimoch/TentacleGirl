@@ -7,21 +7,23 @@ public class Tentacle : MonoBehaviour
     public GameObject[] ioints;
     public bool attack;
 
-    GameObject parent;
     Rigidbody trg;
+    GameObject parent;
     GameObject objEnemy;
+    GameObject objCursor;
 
 
     // Use this for initialization
     void Start()
     {
         trg = ioints[0].GetComponent<Rigidbody>();
+        objCursor = GameObject.Find("cursor");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetMouseButton(0))
         {
             if (attack == false)
             {
@@ -69,16 +71,8 @@ public class Tentacle : MonoBehaviour
 
     void Atack()
     {
-        if (objEnemy != null)
-        {
-            ioints[0].transform.LookAt(objEnemy.transform);
-            trg.AddForce(ioints[0].transform.forward * 100.0f);
-        }
-        else
-        {
-            ioints[0].transform.rotation =  Quaternion.Euler(0, 90, 0);
-            trg.AddForce(ioints[0].transform.forward * 100.0f);
-        }
+        ioints[0].transform.LookAt(objCursor.transform);
+        trg.AddForce(ioints[0].transform.forward * 100.0f);
     }
 
     IEnumerator MoveLerp(Transform transform, Vector3 from, Vector3 to, float duration)
