@@ -6,6 +6,7 @@ public class Player : MonoBehaviour {
 
     public bool jumping = false;
     public float playerLife = 2;
+    public bool hasHit;
 
     Tentacle tentacle;
     GameMaster gm;
@@ -47,18 +48,27 @@ public class Player : MonoBehaviour {
         }
     }
 
+    void LateUpdate()
+    {
+        hasHit = false;
+    }
+
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "field")
         {
             jumping = false;
         }
-        if(col.gameObject.tag == "enemy")
+        if (!hasHit)
         {
-            playerLife--;
-            if (playerLife > 0)
+            hasHit = true;
+            if (col.gameObject.tag == "enemy")
             {
-                StartCoroutine(Frash(2.0f));
+                playerLife--;
+                if (playerLife > 0)
+                {
+                    StartCoroutine(Frash(2.0f));
+                }
             }
         }
     }
