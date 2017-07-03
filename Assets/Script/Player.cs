@@ -47,25 +47,6 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.tag == "field")
-        {
-            jumping = false;
-        }
-       /* if (col.gameObject.tag == "enemy")
-        {
-            if (!hasHit)
-            {
-                hasHit = true;
-                if (playerLife > 0)
-                {
-                    StartCoroutine(Frash(2.0f));
-                }
-            }
-        }*/
-    }
-
     public void Invincible()
     {
         StartCoroutine(Frash(2.0f));

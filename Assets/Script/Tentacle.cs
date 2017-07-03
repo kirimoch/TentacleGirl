@@ -52,7 +52,7 @@ public class Tentacle : MonoBehaviour
         }
         Stop();
         st = Time.time;
-        while (Time.time - st < 0.7)
+        while (Time.time - st < 0.6)
         {
             Return();
             yield return null;

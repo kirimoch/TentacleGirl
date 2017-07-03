@@ -6,12 +6,16 @@ public class PlaCol : MonoBehaviour
 {
     Player pla;
     GameObject plaObj;
+    GameMaster GM;
+    GameObject GMObj;
 
     // Use this for initialization
     void Start()
     {
         plaObj = GameObject.Find("player");
         pla = plaObj.GetComponent<Player>();
+        GMObj = GameObject.Find("GameMaster");
+        GM = GMObj.GetComponent<GameMaster>();
     }
 
     // Update is called once per frame
@@ -22,6 +26,10 @@ public class PlaCol : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
+        if (col.gameObject.tag == "field")
+        {
+            pla.jumping = false;
+        }
         if (col.gameObject.tag == "enemy")
         {
             if (pla.hasHit == false)
