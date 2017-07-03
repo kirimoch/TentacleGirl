@@ -6,7 +6,7 @@ public class Player : MonoBehaviour {
 
     public bool jumping = false;
     public float playerLife = 2;
-    public bool hasHit;
+    public bool hasHit = false;
 
     Tentacle tentacle;
     GameMaster gm;
@@ -21,7 +21,6 @@ public class Player : MonoBehaviour {
         PlaRenderer = GetComponent<MeshRenderer>();
         TenRenderer = GetComponentsInChildren<Renderer>();
         Physics.gravity = new Vector3(0, -130f, 0);
-        StartCoroutine(Frash(2.0f));
     }
 	
 	// Update is called once per frame
@@ -48,29 +47,28 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void LateUpdate()
-    {
-        hasHit = false;
-    }
-
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "field")
         {
             jumping = false;
         }
-        if (!hasHit)
+       /* if (col.gameObject.tag == "enemy")
         {
-            hasHit = true;
-            if (col.gameObject.tag == "enemy")
+            if (!hasHit)
             {
-                playerLife--;
+                hasHit = true;
                 if (playerLife > 0)
                 {
                     StartCoroutine(Frash(2.0f));
                 }
             }
-        }
+        }*/
+    }
+
+    public void Invincible()
+    {
+        StartCoroutine(Frash(2.0f));
     }
 
     void InvincibleStop()
@@ -98,5 +96,7 @@ public class Player : MonoBehaviour {
         {
             renderer.enabled = true;
         }
+        hasHit = false;
     }
+
 }
